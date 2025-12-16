@@ -1,0 +1,34 @@
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  transition: all 0.2s;
+  cursor: pointer;
+  gap: 60px;
+}
+
+.task-item:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-name {
+  font-size: 15px;
+  color: #1a1a1a;
+  font-weight: 400;
+}
+
+.task-time {
+  font-size: 13px;
+  color: #999;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
