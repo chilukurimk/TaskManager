@@ -32,3 +32,17 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+.task-deleted {
+  background-color: #ffe0e0;
+  border-color: #ffcccc;
+}
+
+.task-deleted .task-name {
+  color: #d32f2f;
+  text-decoration: line-through;
+}
+
+.task-deleted .task-time {
+  color: #d32f2f;
+}

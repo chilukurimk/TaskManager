@@ -87,7 +87,10 @@ class Task {
     const task = this.tasks.get(id);
     if (!task) return false;
 
-    this.tasks.delete(id);
+    // Soft delete - mark as deleted instead of removing
+    task.status = 'deleted';
+    task.modifiedAt = new Date().toISOString();
+    this.tasks.set(id, task);
     this.saveToFile();
     return true;
   }

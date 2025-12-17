@@ -41,6 +41,7 @@ function TaskList() {
   const filteredTasks = tasks.filter(task => {
     if (filter === 'active') return task.status === 'active';
     if (filter === 'closed') return task.status === 'closed';
+    // 'all' shows everything including deleted
     return true;
   });
 
@@ -99,6 +100,7 @@ function TaskList() {
               onRefresh={fetchTasks}
               taskId={task.id}
               onClick={() => setSelectedTaskId(task.id)}
+              isDeleted={task.status === 'deleted'}
             />
           ))
         )}

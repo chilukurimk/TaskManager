@@ -26,6 +26,28 @@
   line-height: 1.5;
 }
 
+.edit-input,
+.edit-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #333;
+}
+
+.edit-input:focus,
+.edit-textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.edit-textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
 .status-badge {
   display: inline-block;
   padding: 6px 16px;

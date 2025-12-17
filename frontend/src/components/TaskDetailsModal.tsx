@@ -27,6 +27,9 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
   const [task, setTask] = useState<Task | null>(null);
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState('');
+  const [editedDescription, setEditedDescription] = useState('');
 
   useEffect(() => {
     fetchTaskDetails();
@@ -37,6 +40,8 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
       const response = await fetch(`http://localhost:3000/tasks/${taskId}`);
       const data = await response.json();
       setTask(data);
+      setEditedName(data.name);
+      setEditedDescription(data.description);
     } catch (error) {
       console.error('Error fetching task:', error);
     } finally {
@@ -72,6 +77,48 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
     } catch (error) {
       console.error('Error deleting task:', error);
     }
+  };
+
+  const handleCloseTask = async () => {
+    try {
+      await fetch(`http://localhost:3000/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'closed' }),
+      });
+      onRefresh();
+      onClose();
+    } catch (error) {
+      console.error('Error closing task:', error);
+    }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      await fetch(`http://localhost:3000/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editedName,
+          description: editedDescription,
+        }),
+      });
+      setIsEditing(false);
+      fetchTaskDetails();
+      onRefresh();
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedName(task?.name || '');
+    setEditedDescription(task?.description || '');
   };
 
   const formatDate = (dateString: string) => {
@@ -117,12 +164,30 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
         <div className="task-details-body">
           <div className="detail-section">
             <label className="detail-label">Title</label>
-            <p className="detail-text">{task.name}</p>
+            {isEditing ? (
+              <input
+                type="text"
+                className="edit-input"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            ) : (
+              <p className="detail-text">{task.name}</p>
+            )}
           </div>
 
           <div className="detail-section">
             <label className="detail-label">Description</label>
-            <p className="detail-text">{task.description}</p>
+            {isEditing ? (
+              <textarea
+                className="edit-textarea"
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+                rows={3}
+              />
+            ) : (
+              <p className="detail-text">{task.description}</p>
+            )}
           </div>
 
           <div className="detail-section">
@@ -179,12 +244,25 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
             Delete
           </button>
           <div className="footer-right">
-            <button className="close-btn" onClick={onClose}>
-              Close
-            </button>
-            <button className="edit-btn">
-              Edit
-            </button>
+            {isEditing ? (
+              <>
+                <button className="close-btn" onClick={handleCancelEdit}>
+                  Cancel
+                </button>
+                <button className="edit-btn" onClick={handleSaveEdit}>
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="close-btn" onClick={handleCloseTask}>
+                  Close
+                </button>
+                <button className="edit-btn" onClick={handleEdit}>
+                  Edit
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

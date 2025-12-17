@@ -15,12 +15,15 @@ body {
 
 .app {
   min-height: 100vh;
-  padding: 40px 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 50px 500px;
 }
 
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
+  width: 735px;
+  max-width: 2500px;
 }
 
 .header {
