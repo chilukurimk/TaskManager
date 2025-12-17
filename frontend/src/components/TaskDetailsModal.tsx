@@ -240,9 +240,16 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
         </div>
 
         <div className="modal-footer">
-          <button className="delete-btn" onClick={handleDelete}>
-            Delete
-          </button>
+          {task.status !== 'deleted' ? (
+            <button 
+              className="delete-btn" 
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          ) : (
+            <div></div>
+          )}
           <div className="footer-right">
             {isEditing ? (
               <>
@@ -255,9 +262,16 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
               </>
             ) : (
               <>
-                <button className="close-btn" onClick={handleCloseTask}>
-                  Close
-                </button>
+                {task.status !== 'closed' ? (
+                  <button 
+                    className="close-btn" 
+                    onClick={handleCloseTask}
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <div style={{ width: '0' }}></div>
+                )}
                 <button className="edit-btn" onClick={handleEdit}>
                   Edit
                 </button>
