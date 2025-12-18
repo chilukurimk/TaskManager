@@ -5,6 +5,7 @@ import CreateTaskModal from './components/CreateTaskModal';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="app">
@@ -16,7 +17,22 @@ function App() {
           </button>
         </header>
 
-        <TaskList />
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button className="clear-search" onClick={() => setSearchQuery('')}>
+              ✕
+            </button>
+          )}
+        </div>
+
+        <TaskList searchQuery={searchQuery} />
 
         {isModalOpen && (
           <CreateTaskModal onClose={() => setIsModalOpen(false)} />

@@ -17,7 +17,11 @@ interface Task {
 
 type FilterType = 'active' | 'all' | 'closed';
 
-function TaskList() {
+interface TaskListProps {
+  searchQuery: string;
+}
+
+function TaskList({ searchQuery }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<FilterType>('active');
   const [loading, setLoading] = useState(true);
@@ -40,10 +44,16 @@ function TaskList() {
   };
 
   const filteredTasks = tasks.filter(task => {
-    if (filter === 'active') return task.status === 'active';
-    if (filter === 'closed') return task.status === 'closed';
-    // 'all' shows everything including deleted
-    return true;
+    // Filter by status
+    let statusMatch = true;
+    if (filter === 'active') statusMatch = task.status === 'active';
+    else if (filter === 'closed') statusMatch = task.status === 'closed';
+    
+    // Filter by search query
+    const searchMatch = searchQuery.trim() === '' || 
+      task.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return statusMatch && searchMatch;
   });
 
   const getTimeAgo = (dateString: string) => {
