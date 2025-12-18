@@ -32,6 +32,7 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
   const [editedName, setEditedName] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
   const [editedLabels, setEditedLabels] = useState<string[]>([]);
+  const [customLabel, setCustomLabel] = useState('');
 
   const availableLabels = ['work', 'personal', 'important', 'urgent', 'meeting', 'home', 'shopping'];
 
@@ -41,6 +42,18 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
         ? prev.filter(l => l !== label)
         : [...prev, label]
     );
+  };
+
+  const addCustomLabel = () => {
+    const label = customLabel.trim().toLowerCase();
+    if (label && !editedLabels.includes(label)) {
+      setEditedLabels(prev => [...prev, label]);
+      setCustomLabel('');
+    }
+  };
+
+  const removeLabel = (label: string) => {
+    setEditedLabels(prev => prev.filter(l => l !== label));
   };
 
   useEffect(() => {
@@ -213,23 +226,49 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
           <div className="detail-section">
             <label className="detail-label">Labels</label>
             {isEditing ? (
-              <div className="labels-container">
-                {availableLabels.map(label => (
-                  <button
-                    key={label}
-                    type="button"
-                    className={`label-chip ${editedLabels.includes(label) ? 'selected' : ''} label-${label}`}
-                    onClick={() => toggleLabel(label)}
-                  >
-                    {label}
+              <>
+                <div className="labels-container">
+                  {availableLabels.map(label => (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`label-chip ${editedLabels.includes(label) ? 'selected' : ''} label-${label}`}
+                      onClick={() => toggleLabel(label)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="custom-label-input">
+                  <input
+                    type="text"
+                    placeholder="Add custom label"
+                    value={customLabel}
+                    onChange={(e) => setCustomLabel(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomLabel())}
+                  />
+                  <button type="button" className="add-label-btn" onClick={addCustomLabel}>
+                    Add
                   </button>
-                ))}
-              </div>
+                </div>
+
+                {editedLabels.filter(l => !availableLabels.includes(l)).length > 0 && (
+                  <div className="selected-custom-labels">
+                    {editedLabels.filter(l => !availableLabels.includes(l)).map(label => (
+                      <span key={label} className="custom-label-tag">
+                        {label}
+                        <button type="button" onClick={() => removeLabel(label)}>✕</button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </>
             ) : (
               <div className="labels-display">
                 {task.labels && task.labels.length > 0 ? (
                   task.labels.map(label => (
-                    <span key={label} className={`label-badge label-${label}`}>
+                    <span key={label} className={`label-badge ${availableLabels.includes(label) ? `label-${label}` : 'label-custom'}`}>
                       {label}
                     </span>
                   ))

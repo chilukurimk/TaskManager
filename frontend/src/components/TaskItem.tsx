@@ -17,11 +17,15 @@ function TaskItem({ name, timeAgo, onClick, isDeleted, labels }: TaskItemProps) 
       <div className="task-right">
         {labels && labels.length > 0 && (
           <div className="task-labels">
-            {labels.map(label => (
-              <span key={label} className={`label-badge label-${label}`}>
-                {label}
-              </span>
-            ))}
+            {labels.map(label => {
+              const predefinedLabels = ['work', 'personal', 'important', 'urgent', 'meeting', 'home', 'shopping'];
+              const labelClass = predefinedLabels.includes(label) ? `label-${label}` : 'label-custom';
+              return (
+                <span key={label} className={`label-badge ${labelClass}`}>
+                  {label}
+                </span>
+              );
+            })}
           </div>
         )}
         <span className="task-time">{timeAgo}</span>

@@ -10,6 +10,7 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [customLabel, setCustomLabel] = useState('');
 
   const availableLabels = ['work', 'personal', 'important', 'urgent', 'meeting', 'home', 'shopping'];
 
@@ -19,6 +20,18 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
         ? prev.filter(l => l !== label)
         : [...prev, label]
     );
+  };
+
+  const addCustomLabel = () => {
+    const label = customLabel.trim().toLowerCase();
+    if (label && !selectedLabels.includes(label)) {
+      setSelectedLabels(prev => [...prev, label]);
+      setCustomLabel('');
+    }
+  };
+
+  const removeLabel = (label: string) => {
+    setSelectedLabels(prev => prev.filter(l => l !== label));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,6 +127,30 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
                 </button>
               ))}
             </div>
+            
+            <div className="custom-label-input">
+              <input
+                type="text"
+                placeholder="Add custom label"
+                value={customLabel}
+                onChange={(e) => setCustomLabel(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomLabel())}
+              />
+              <button type="button" className="add-label-btn" onClick={addCustomLabel}>
+                Add
+              </button>
+            </div>
+
+            {selectedLabels.filter(l => !availableLabels.includes(l)).length > 0 && (
+              <div className="selected-custom-labels">
+                {selectedLabels.filter(l => !availableLabels.includes(l)).map(label => (
+                  <span key={label} className="custom-label-tag">
+                    {label}
+                    <button type="button" onClick={() => removeLabel(label)}>✕</button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="modal-actions">
