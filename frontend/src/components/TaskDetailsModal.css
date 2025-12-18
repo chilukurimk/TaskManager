@@ -234,3 +234,67 @@
 .edit-btn:hover {
   background-color: #333;
 }
+
+/* Labels */
+.labels-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.label-chip {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 2px solid #e0e0e0;
+  background-color: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.label-chip:hover {
+  border-color: #bbb;
+}
+
+.label-chip.selected {
+  color: white;
+  border-color: transparent;
+}
+
+.labels-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.label-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+}
+
+.no-labels {
+  font-size: 13px;
+  color: #999;
+}
+
+/* Label colors */
+.label-work { background-color: #3b82f6; }
+.label-personal { background-color: #8b5cf6; }
+.label-important { background-color: #ef4444; }
+.label-urgent { background-color: #f59e0b; }
+.label-meeting { background-color: #10b981; }
+.label-home { background-color: #ec4899; }
+.label-shopping { background-color: #14b8a6; }
+
+.label-chip.selected.label-work { background-color: #3b82f6; }
+.label-chip.selected.label-personal { background-color: #8b5cf6; }
+.label-chip.selected.label-important { background-color: #ef4444; }
+.label-chip.selected.label-urgent { background-color: #f59e0b; }
+.label-chip.selected.label-meeting { background-color: #10b981; }
+.label-chip.selected.label-home { background-color: #ec4899; }
+.label-chip.selected.label-shopping { background-color: #14b8a6; }

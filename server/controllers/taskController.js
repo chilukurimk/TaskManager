@@ -2,13 +2,13 @@ const Task = require('../models/Task');
 
 // Create a new task
 exports.createTask = (req, res) => {
-  const { name, date, time, description } = req.body || {};
+  const { name, date, time, description, labels } = req.body || {};
 
   if (!name || !date || !time) {
     return res.status(400).json({ error: 'name, date, and time are required' });
   }
 
-  const task = Task.create({ name, date, time, description });
+  const task = Task.create({ name, date, time, description, labels });
   res.status(201).json(task);
 };
 
@@ -29,8 +29,8 @@ exports.getTaskById = (req, res) => {
 
 // Update a task
 exports.updateTask = (req, res) => {
-  const { name, date, time, description, status } = req.body || {};
-  const task = Task.update(req.params.id, { name, date, time, description, status });
+  const { name, date, time, description, status, labels } = req.body || {};
+  const task = Task.update(req.params.id, { name, date, time, description, status, labels });
 
   if (!task) {
     return res.status(404).json({ error: 'Task not found' });

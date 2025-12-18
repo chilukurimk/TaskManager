@@ -12,6 +12,7 @@ interface Task {
   status: string;
   createdAt: string;
   modifiedAt: string;
+  labels?: string[];
 }
 
 type FilterType = 'active' | 'all' | 'closed';
@@ -96,11 +97,12 @@ function TaskList() {
             <TaskItem
               key={task.id}
               name={task.name}
-              timeAgo={getTimeAgo(task.createdAt)}
+              timeAgo={getTimeAgo(task.modifiedAt)}
               onRefresh={fetchTasks}
               taskId={task.id}
               onClick={() => setSelectedTaskId(task.id)}
               isDeleted={task.status === 'deleted'}
+              labels={task.labels}
             />
           ))
         )}

@@ -9,6 +9,17 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+
+  const availableLabels = ['work', 'personal', 'important', 'urgent', 'meeting', 'home', 'shopping'];
+
+  const toggleLabel = (label: string) => {
+    setSelectedLabels(prev => 
+      prev.includes(label) 
+        ? prev.filter(l => l !== label)
+        : [...prev, label]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +42,7 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
           description: description || 'No description',
           date: new Date().toISOString().split('T')[0],
           time: new Date().toTimeString().split(' ')[0].substring(0, 5),
+          labels: selectedLabels,
         }),
       });
 
@@ -86,6 +98,22 @@ function CreateTaskModal({ onClose }: CreateTaskModalProps) {
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
             />
+          </div>
+
+          <div className="form-group">
+            <label>Labels <span className="optional-text">(optional)</span></label>
+            <div className="labels-container">
+              {availableLabels.map(label => (
+                <button
+                  key={label}
+                  type="button"
+                  className={`label-chip ${selectedLabels.includes(label) ? 'selected' : ''} label-${label}`}
+                  onClick={() => toggleLabel(label)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="modal-actions">

@@ -49,6 +49,7 @@ class Task {
       time: data.time,
       description: data.description || '',
       status: 'active',
+      labels: data.labels || [],
       comments: [],
       createdAt,
       modifiedAt: createdAt
@@ -76,6 +77,7 @@ class Task {
     task.time = data.time !== undefined ? data.time : task.time;
     task.description = data.description !== undefined ? data.description : task.description;
     task.status = data.status !== undefined ? data.status : task.status;
+    task.labels = data.labels !== undefined ? data.labels : task.labels;
     task.modifiedAt = new Date().toISOString();
 
     this.tasks.set(id, task);

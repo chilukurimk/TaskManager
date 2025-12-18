@@ -8,7 +8,7 @@
   border: 1px solid #e8e8e8;
   transition: all 0.2s;
   cursor: pointer;
-  gap: 60px;
+  gap: 16px;
 }
 
 .task-item:hover {
@@ -16,21 +16,24 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.task-content {
-  flex: 1;
-}
-
 .task-name {
   font-size: 15px;
   color: #1a1a1a;
   font-weight: 400;
+  flex: 1;
+}
+
+.task-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .task-time {
   font-size: 13px;
   color: #999;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .task-deleted {
@@ -46,3 +49,26 @@
 .task-deleted .task-time {
   color: #d32f2f;
 }
+
+.task-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.label-badge {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Label colors */
+.label-work { background-color: #3b82f6; }
+.label-personal { background-color: #8b5cf6; }
+.label-important { background-color: #ef4444; }
+.label-urgent { background-color: #f59e0b; }
+.label-meeting { background-color: #10b981; }
+.label-home { background-color: #ec4899; }
+.label-shopping { background-color: #14b8a6; }

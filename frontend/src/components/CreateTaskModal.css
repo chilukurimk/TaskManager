@@ -78,6 +78,12 @@
   margin-bottom: 8px;
 }
 
+.optional-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999;
+}
+
 .form-group input,
 .form-group textarea {
   width: 100%;
@@ -141,3 +147,40 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* Labels */
+.labels-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.label-chip {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 2px solid #e0e0e0;
+  background-color: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.label-chip:hover {
+  border-color: #bbb;
+}
+
+.label-chip.selected {
+  color: white;
+  border-color: transparent;
+}
+
+/* Label colors */
+.label-work.selected { background-color: #3b82f6; }
+.label-personal.selected { background-color: #8b5cf6; }
+.label-important.selected { background-color: #ef4444; }
+.label-urgent.selected { background-color: #f59e0b; }
+.label-meeting.selected { background-color: #10b981; }
+.label-home.selected { background-color: #ec4899; }
+.label-shopping.selected { background-color: #14b8a6; }

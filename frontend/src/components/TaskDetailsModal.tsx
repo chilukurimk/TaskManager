@@ -15,6 +15,7 @@ interface Task {
   createdAt: string;
   modifiedAt: string;
   comments: Comment[];
+  labels?: string[];
 }
 
 interface TaskDetailsModalProps {
@@ -30,6 +31,17 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
+  const [editedLabels, setEditedLabels] = useState<string[]>([]);
+
+  const availableLabels = ['work', 'personal', 'important', 'urgent', 'meeting', 'home', 'shopping'];
+
+  const toggleLabel = (label: string) => {
+    setEditedLabels(prev => 
+      prev.includes(label) 
+        ? prev.filter(l => l !== label)
+        : [...prev, label]
+    );
+  };
 
   useEffect(() => {
     fetchTaskDetails();
@@ -42,6 +54,7 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
       setTask(data);
       setEditedName(data.name);
       setEditedDescription(data.description);
+      setEditedLabels(data.labels || []);
     } catch (error) {
       console.error('Error fetching task:', error);
     } finally {
@@ -105,6 +118,7 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
         body: JSON.stringify({
           name: editedName,
           description: editedDescription,
+          labels: editedLabels,
         }),
       });
       setIsEditing(false);
@@ -119,6 +133,7 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
     setIsEditing(false);
     setEditedName(task?.name || '');
     setEditedDescription(task?.description || '');
+    setEditedLabels(task?.labels || []);
   };
 
   const formatDate = (dateString: string) => {
@@ -193,6 +208,36 @@ function TaskDetailsModal({ taskId, onClose, onRefresh }: TaskDetailsModalProps)
           <div className="detail-section">
             <label className="detail-label">Status</label>
             <span className="status-badge">{task.status}</span>
+          </div>
+
+          <div className="detail-section">
+            <label className="detail-label">Labels</label>
+            {isEditing ? (
+              <div className="labels-container">
+                {availableLabels.map(label => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={`label-chip ${editedLabels.includes(label) ? 'selected' : ''} label-${label}`}
+                    onClick={() => toggleLabel(label)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="labels-display">
+                {task.labels && task.labels.length > 0 ? (
+                  task.labels.map(label => (
+                    <span key={label} className={`label-badge label-${label}`}>
+                      {label}
+                    </span>
+                  ))
+                ) : (
+                  <span className="no-labels">No labels</span>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="detail-dates">
